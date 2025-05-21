@@ -132,7 +132,7 @@ plt.tight_layout()
 plt.show()
 
 # Sauvegarder les données dans des fichiers CSV
-#data.to_csv(os.path.join(chemin_dossier, "ese_data.csv"))
+data.to_csv(os.path.join(chemin_dossier, "ese_data.csv"))
 #data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
 
 
