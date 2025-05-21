@@ -71,7 +71,7 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Sauvegarder le graphique dans le dossier spécifique
-plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
+#plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
 plt.show()
 
 # --- Graphique 2 : S&P 500 ---
@@ -86,12 +86,11 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Sauvegarder le graphique dans le dossier spécifique
-plt.savefig(os.path.join(chemin_dossier, "graphique_sp500.png"))
+#plt.savefig(os.path.join(chemin_dossier, "graphique_sp500.png"))
 plt.show()
 
 # Sauvegarder les données dans des fichiers CSV
-data.to_csv(os.path.join(chemin_dossier, "ese_data.csv"))
-data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
+#data.to_csv(os.path.join(chemin_dossier, "ese_data.csv"))
+#data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
 
 
-oooooooooooooooooooooooooooo
