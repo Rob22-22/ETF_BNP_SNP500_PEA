@@ -95,4 +95,4 @@ data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
 
 
 
-je fais ca pour faire 
+je fais ca pour faire gg
