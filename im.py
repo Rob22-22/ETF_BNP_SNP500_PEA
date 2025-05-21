@@ -3,136 +3,230 @@ import matplotlib.pyplot as plt
 import os
 import pandas as pd
 
-# Dossier de sauvegarde
-chemin_dossier = "C:\\Users\\robin.guichon\\Documents\\Test"
-os.makedirs(chemin_dossier, exist_ok=True)
+# ====================== Variables modifiables en haut ======================
 
-# Télécharger les données minute par minute pour ESE.PA
-data = yf.download("ESE.PA", period="1y", interval="1h")
-data = data.tz_convert('Europe/Paris')  # Fuseau horaire Paris
+ticker = "ESE.PA"
+heure_debut = "09:00"
+heure_fin = "17:30"
 
-# Garder seulement les heures d'ouverture (9h à 17h30)
-data = data.between_time("09:00", "17:30")
+periode_1d_1m = "1d"
+intervalle_1d_1m = "1m"
 
-# Réinitialiser l’index pour manipuler comme liste continue
+periode_5d_15m = "5d"
+intervalle_5d_15m = "15m"
+
+periode_3mo_1h = "3mo"
+intervalle_3mo_1h = "1h"
+
+periode_6mo_1h = "6mo"
+intervalle_6mo_1h = "1h"
+
+periode_1y_1h = "1y"
+intervalle_1y_1h = "1h"
+
+periode_5y_1d = "5y"
+intervalle_5y_1d = "1d"
+
+periode_10y_1d = "10y"
+intervalle_10y_1d = "1d"
+
+chemin_dossier_csv = "C:\\Users\\robin.guichon\\Documents\\Test\\csv"
+chemin_dossier_graphe = "C:\\Users\\robin.guichon\\Documents\\Test\\graphe"
+
+# Nouveau paramètre taille de figure
+taille_figure = (28, 12)
+
+os.makedirs(chemin_dossier_csv, exist_ok=True)
+os.makedirs(chemin_dossier_graphe, exist_ok=True)
+
+
+# ========================================================================================== 1d/1m ==========================================================================================
+
+data = yf.download(ticker, period=periode_1d_1m, interval=intervalle_1d_1m)
+data = data.tz_convert('Europe/Paris')
+
+data = data.between_time(heure_debut, heure_fin)
 data.reset_index(inplace=True)
 
-# Créer un nouvel index pour que matplotlib n'interprète pas les sauts de temps
 x = range(len(data))
 y = data['Close']
 labels = data['Datetime'].dt.strftime("%d/%m %H:%M")
 
-# Tracer
-plt.figure(figsize=(14, 6))
-plt.plot(x, y, label="ESE.PA - Prix minute", color='blue')
-plt.xlabel("Temps (minutes de marché)")
+plt.figure(figsize=taille_figure)
+plt.plot(x, y, label=ticker, color='black')
+plt.xlabel("Date")
 plt.ylabel("Prix (€)")
-plt.title("Prix minute par minute - Heures d'ouverture uniquement (ESE.PA)")
-plt.grid(True)
+plt.title(f"{periode_1d_1m}/{intervalle_1d_1m}")
+plt.grid(axis='y')
 plt.legend()
 
-# Afficher seulement quelques labels pour ne pas surcharger l’axe
-step = len(x) // 10  # 10 labels max
+step = max(len(x) // 10, 1)
 plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
 
 plt.tight_layout()
-plt.show()
+
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_1d_1m}_{intervalle_1d_1m}_{ticker.replace('.', '_')}.csv"), index=False)
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_1d_1m}_{intervalle_1d_1m}_{ticker.replace('.', '_')}.png"))
+plt.close()
 
 
+# ========================================================================================== 5d/15m ==========================================================================================
 
+data = yf.download(ticker, period=periode_5d_15m, interval=intervalle_5d_15m)
+data = data.tz_convert('Europe/Paris')
 
-# Dossier de sauvegarde
-chemin_dossier = "C:\\Users\\robin.guichon\\Documents\\Test"
-os.makedirs(chemin_dossier, exist_ok=True)
-
-# Télécharger les données minute par minute pour ESE.PA
-data = yf.download("ESE.PA", start="2023-05-25", end="2024-05-20", interval="1h")
-data = data.tz_convert('Europe/Paris')  # Fuseau horaire Paris
-
-# Garder seulement les heures d'ouverture (9h à 17h30)
-data = data.between_time("09:00", "17:30")
-
-# Réinitialiser l’index pour manipuler comme liste continue
+data = data.between_time(heure_debut, heure_fin)
 data.reset_index(inplace=True)
 
-# Créer un nouvel index pour que matplotlib n'interprète pas les sauts de temps
 x = range(len(data))
 y = data['Close']
 labels = data['Datetime'].dt.strftime("%d/%m %H:%M")
 
-# Tracer
-plt.figure(figsize=(14, 6))
-plt.plot(x, y, label="ESE.PA - Prix minute", color='blue')
-plt.xlabel("Temps (minutes de marché)")
+plt.figure(figsize=taille_figure)
+plt.plot(x, y, label=ticker, color='black')
+plt.xlabel("Date")
 plt.ylabel("Prix (€)")
-plt.title("Prix minute par minute - Heures d'ouverture uniquement (ESE.PA)")
-plt.grid(True)
+plt.title(f"{periode_5d_15m}/{intervalle_5d_15m}")
+plt.grid(axis='y')
 plt.legend()
 
-# Afficher seulement quelques labels pour ne pas surcharger l’axe
-step = len(x) // 10  # 10 labels max
+step = max(len(x) // 10, 1)
 plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
 
 plt.tight_layout()
-plt.show()
+
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_5d_15m}_{intervalle_5d_15m}_{ticker.replace('.', '_')}.csv"), index=False)
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_5d_15m}_{intervalle_5d_15m}_{ticker.replace('.', '_')}.png"))
+plt.close()
 
 
+# ========================================================================================== 3mo/1h ==========================================================================================
+
+data = yf.download(ticker, period=periode_3mo_1h, interval=intervalle_3mo_1h)
+data = data.tz_convert('Europe/Paris')
+
+data = data.between_time(heure_debut, heure_fin)
+data.reset_index(inplace=True)
+
+x = range(len(data))
+y = data['Close']
+labels = data['Datetime'].dt.strftime("%d/%m %H:%M")
+
+plt.figure(figsize=taille_figure)
+plt.plot(x, y, label=ticker, color='black')
+plt.xlabel("Date")
+plt.ylabel("Prix (€)")
+plt.title(f"{periode_3mo_1h}/{intervalle_3mo_1h}")
+plt.grid(axis='y')
+plt.legend()
+
+step = max(len(x) // 10, 1)
+plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
+
+plt.tight_layout()
+
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_3mo_1h}_{intervalle_3mo_1h}_{ticker.replace('.', '_')}.csv"), index=False)
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_3mo_1h}_{intervalle_3mo_1h}_{ticker.replace('.', '_')}.png"))
+plt.close()
 
 
+# ========================================================================================== 6mo/1h ==========================================================================================
+
+data = yf.download(ticker, period=periode_6mo_1h, interval=intervalle_6mo_1h)
+data = data.tz_convert('Europe/Paris')
+
+data = data.between_time(heure_debut, heure_fin)
+data.reset_index(inplace=True)
+
+x = range(len(data))
+y = data['Close']
+labels = data['Datetime'].dt.strftime("%d/%m %H:%M")
+
+plt.figure(figsize=taille_figure)
+plt.plot(x, y, label=ticker, color='black')
+plt.xlabel("Date")
+plt.ylabel("Prix (€)")
+plt.title(f"{periode_6mo_1h}/{intervalle_6mo_1h}")
+plt.grid(axis='y')
+plt.legend()
+
+step = max(len(x) // 10, 1)
+plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
+
+plt.tight_layout()
+
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_6mo_1h}_{intervalle_6mo_1h}_{ticker.replace('.', '_')}.csv"), index=False)
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_6mo_1h}_{intervalle_6mo_1h}_{ticker.replace('.', '_')}.png"))
+plt.close()
 
 
+# ========================================================================================== 1y/1h ==========================================================================================
+
+data = yf.download(ticker, period=periode_1y_1h, interval=intervalle_1y_1h)
+data = data.tz_convert('Europe/Paris')
+
+data = data.between_time(heure_debut, heure_fin)
+data.reset_index(inplace=True)
+
+x = range(len(data))
+y = data['Close']
+labels = data['Datetime'].dt.strftime("%d/%m %H:%M")
+
+plt.figure(figsize=taille_figure)
+plt.plot(x, y, label=ticker, color='black')
+plt.xlabel("Date")
+plt.ylabel("Prix (€)")
+plt.title(f"{periode_1y_1h}/{intervalle_1y_1h}")
+plt.grid(axis='y')
+plt.legend()
+
+step = max(len(x) // 10, 1)
+plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
+
+plt.tight_layout()
+
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_1y_1h}_{intervalle_1y_1h}_{ticker.replace('.', '_')}.csv"), index=False)
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_1y_1h}_{intervalle_1y_1h}_{ticker.replace('.', '_')}.png"))
+plt.close()
 
 
-# Définir le chemin où tu veux enregistrer les fichiers (ici, sur le Bureau dans 'finance')
-chemin_dossier = "C:\\Users\\robin.guichon\\Documents\\Test\\Test1"
+# ========================================================================================== 5y/1d ==========================================================================================
 
-# Créer le dossier si nécessaire
-os.makedirs(chemin_dossier, exist_ok=True)
-
-# Télécharger les données historiques de l'ETF ESE.PA
-data = yf.download("ESE.PA", start="2022-01-01", end="2022-01-20", interval="1d")
-print(data['Close'].head())
+data = yf.download(ticker, period=periode_5y_1d, interval=intervalle_5y_1d)
 dates = data.index
 prix = data['Close']
 
-# Télécharger les données de l'indice S&P 500
-data1 = yf.download("ESE.PA", start="2023-05-25", end="2024-05-20", interval="4h")
-print(data1['Close'].head())
-dates1 = data1.index
-prix1 = data1['Close']
-
-# --- Graphique 1 : ESE.PA ---
-plt.figure(figsize=(10, 6))
-plt.plot(dates, prix, label='Prix Close de ESE.PA', color='blue')
-plt.xlabel('Date')
-plt.ylabel('Prix')
-plt.title('Prix Close de l\'ETF ESE.PA')
+plt.figure(figsize=taille_figure)
+plt.plot(dates, prix, label=ticker, color='black')
+plt.xlabel("Date")
+plt.ylabel("Prix (€)")
+plt.title(f"{periode_5y_1d}/{intervalle_5y_1d}")
+plt.grid(axis='y')
 plt.legend()
-plt.grid(True)
 plt.xticks(rotation=45)
 plt.tight_layout()
 
-# Sauvegarder le graphique dans le dossier spécifique
-plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
-plt.show()
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_5y_1d}_{intervalle_5y_1d}_{ticker.replace('.', '_')}.csv"))
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_5y_1d}_{intervalle_5y_1d}_{ticker.replace('.', '_')}.png"))
+plt.close()
 
-# --- Graphique 2 : S&P 500 ---
-plt.figure(figsize=(10, 6))
-#plt.plot(dates1, prix1, label='Prix Close de l\'indice S&P 500', color='green')
-plt.xlabel('Date')
-plt.ylabel('Prix')
-plt.title('Prix Close de l\'indice S&P 500')
+
+# ========================================================================================== 10y/1d ==========================================================================================
+
+data = yf.download(ticker, period=periode_10y_1d, interval=intervalle_10y_1d)
+dates = data.index
+prix = data['Close']
+
+plt.figure(figsize=taille_figure)
+plt.plot(dates, prix, label=ticker, color='black')
+plt.xlabel("Date")
+plt.ylabel("Prix (€)")
+plt.title(f"{periode_10y_1d}/{intervalle_10y_1d}")
+plt.grid(axis='y')
 plt.legend()
-plt.grid(True)
 plt.xticks(rotation=45)
 plt.tight_layout()
 
-# Sauvegarder le graphique dans le dossier spécifique
-#plt.savefig(os.path.join(chemin_dossier, "graphique_sp500.png"))
-plt.show()
-
-# Sauvegarder les données dans des fichiers CSV
-#data.to_csv(os.path.join(chemin_dossier, "ese_data.csv"))
-#data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
-
-assdddzzzzzzzzzzz
+data.to_csv(os.path.join(chemin_dossier_csv, f"{periode_10y_1d}_{intervalle_10y_1d}_{ticker.replace('.', '_')}.csv"))
+plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode_10y_1d}_{intervalle_10y_1d}_{ticker.replace('.', '_')}.png"))
+plt.close()
