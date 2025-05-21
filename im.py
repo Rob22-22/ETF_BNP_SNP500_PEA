@@ -135,4 +135,4 @@ plt.show()
 #data.to_csv(os.path.join(chemin_dossier, "ese_data.csv"))
 #data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
 
-ass
+assdddzzzzzzzzzzz
