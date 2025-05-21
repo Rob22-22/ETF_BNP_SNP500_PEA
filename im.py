@@ -84,7 +84,7 @@ plt.show()
 
 
 # Définir le chemin où tu veux enregistrer les fichiers (ici, sur le Bureau dans 'finance')
-chemin_dossier = "C:\\Users\\robin.guichon\\Documents\\Test"
+chemin_dossier = "C:\\Users\\robin.guichon\\Documents\\Test\\Test1"
 
 # Créer le dossier si nécessaire
 os.makedirs(chemin_dossier, exist_ok=True)
