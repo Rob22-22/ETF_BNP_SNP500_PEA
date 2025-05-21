@@ -71,7 +71,7 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Sauvegarder le graphique dans le dossier spécifique
-#plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
+plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
 plt.show()
 
 # --- Graphique 2 : S&P 500 ---
