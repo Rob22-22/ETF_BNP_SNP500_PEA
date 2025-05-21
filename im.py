@@ -136,3 +136,4 @@ plt.show()
 #data1.to_csv(os.path.join(chemin_dossier, "sp500_data.csv"))
 
 
+gggg
