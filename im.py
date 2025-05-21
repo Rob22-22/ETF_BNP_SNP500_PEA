@@ -90,7 +90,7 @@ chemin_dossier = "C:\\Users\\robin.guichon\\Documents\\Test"
 os.makedirs(chemin_dossier, exist_ok=True)
 
 # Télécharger les données historiques de l'ETF ESE.PA
-data = yf.download("ESE.PA", start="2022-01-01", end="2022-01-20", interval="1h")
+data = yf.download("ESE.PA", start="2022-01-01", end="2022-01-20", interval="1d")
 print(data['Close'].head())
 dates = data.index
 prix = data['Close']
@@ -113,7 +113,7 @@ plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Sauvegarder le graphique dans le dossier spécifique
-#plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
+plt.savefig(os.path.join(chemin_dossier, "graphique_ese.png"))
 plt.show()
 
 # --- Graphique 2 : S&P 500 ---
