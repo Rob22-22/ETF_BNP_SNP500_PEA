@@ -191,11 +191,20 @@ def tracer_periode(periode, intervalle):
 
     step = max(len(x) // 10, 1)
     plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
+
+    # Réduction des marges gauche/droite
+    for ax in [ax1, ax2, ax3, ax4, ax5, ax6]:
+        ax.set_xlim(left=0, right=len(x) - 1)
+
+    step = max(len(x) // 10, 1)
+    plt.xticks(ticks=x[::step], labels=labels[::step], rotation=45)
     plt.tight_layout()
 
     data.to_csv(os.path.join(chemin_dossier_csv, f"{periode}_{intervalle}_{ticker.replace('.', '_')}.csv"), index=False)
     plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode}_{intervalle}_{ticker.replace('.', '_')}_graph.png"))
     plt.close()
+
+
 
 # Appels
 tracer_periode(periode_1d_1m, intervalle_1d_1m)
