@@ -90,8 +90,8 @@ intervalle_5y_1d = "1d"
 periode_10y_1d = "10y"
 intervalle_10y_1d = "1d"
 
-chemin_dossier_csv = "C:\\Users\\robin.guichon\\Documents\\Test\\csv"
-chemin_dossier_graphe = "C:\\Users\\robin.guichon\\Documents\\Test\\graphe"
+chemin_dossier_csv = "C:\\Users\\robin.guichon\\Documents\\Test\\CSV"
+chemin_dossier_graphe = "C:\\Users\\robin.guichon\\Documents\\Test\\Graph"
 
 def tracer_periode(periode, intervalle):
     print(f"Téléchargement des données pour {periode} / {intervalle} ...")
