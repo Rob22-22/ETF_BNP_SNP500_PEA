@@ -206,3 +206,7 @@ tracer_periode(periode_6mo_1h, intervalle_6mo_1h)
 tracer_periode(periode_1y_1h, intervalle_1y_1h)
 tracer_periode(periode_5y_1d, intervalle_5y_1d)
 tracer_periode(periode_10y_1d, intervalle_10y_1d)
+
+
+
+ff
