@@ -125,6 +125,11 @@ def tracer_periode(periode, intervalle):
     if intervalle in ['1m', '2m', '5m', '15m', '30m', '60m', '1h', '90m', '120m']:
         data = data.between_time(heure_debut, heure_fin)
 
+    # Filtrer uniquement les données du jour courant pour 1d/1m
+    if periode == "1d" and intervalle == "1m":
+        today = pd.Timestamp.now(tz='Europe/Paris').date()
+        data = data[data.index.date == today]
+
     data.reset_index(inplace=True)
 
     now = pd.Timestamp.now(tz='Europe/Paris')
@@ -255,14 +260,3 @@ tracer_periode(periode_6mo_1h, intervalle_6mo_1h)
 tracer_periode(periode_1y_1h, intervalle_1y_1h)
 tracer_periode(periode_5y_1d, intervalle_5y_1d)
 tracer_periode(periode_10y_1d, intervalle_10y_1d)
-
-
-
-
-
-
-
-
-
-
-cc
