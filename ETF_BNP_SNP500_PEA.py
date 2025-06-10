@@ -125,22 +125,29 @@ def tracer_periode(periode, intervalle):
     if intervalle in ['1m', '2m', '5m', '15m', '30m', '60m', '1h', '90m', '120m']:
         data = data.between_time(heure_debut, heure_fin)
 
-    # Pour calculs : on garde les données récentes (veille + aujourd'hui)
-    # Pour affichage : on sélectionne seulement les données du jour en cours
-    if periode == "1d" and intervalle == "1m":
-        today = pd.Timestamp.now(tz='Europe/Paris').date()
-        data["EstAujourdHui"] = data.index.date == today
-    else:
-        data["EstAujourdHui"] = True  # pour les autres périodes, on garde tout
-
     data.reset_index(inplace=True)
 
-    now = pd.Timestamp.now(tz='Europe/Paris')
+    # Création de la colonne DateRef selon nom de colonne
     if "Datetime" in data.columns:
         data["DateRef"] = data["Datetime"]
     else:
         data["DateRef"] = data["Date"]
 
+    close = data['Close']
+    high = data['High']
+    low = data['Low']
+
+    # Calcul des indicateurs sur tout l’historique étendu
+    data['RSI'] = calcul_rsi(close)
+    data['MACD'], data['MACD_signal'] = calcul_macd(close)
+    data['SMA_20'] = calcul_moyenne_mobile(close, 20)
+    data['SMA_50'] = calcul_moyenne_mobile(close, 50)
+    data['Bollinger_sup'], data['Bollinger_inf'] = calcul_bollinger(close)
+    data['Stoch_K'], data['Stoch_D'] = calcul_stochastique(high, low, close)
+    data['ADX'], data['Plus_DI'], data['Minus_DI'] = calcul_adx(high, low, close)
+
+    # Filtrage pour affichage et export CSV selon la période demandée
+    now = pd.Timestamp.now(tz='Europe/Paris')
     if periode.endswith("d"):
         jours = int(periode[:-1])
         date_limite = now - pd.Timedelta(days=jours)
@@ -153,22 +160,9 @@ def tracer_periode(periode, intervalle):
     else:
         date_limite = data["DateRef"].iloc[-1]
 
-    data["Afficher"] = data["EstAujourdHui"]
+    data_affiche = data[data["DateRef"] >= date_limite].copy()
 
-    close = data['Close']
-    high = data['High']
-    low = data['Low']
-
-    data['RSI'] = calcul_rsi(close)
-    data['MACD'], data['MACD_signal'] = calcul_macd(close)
-    data['SMA_20'] = calcul_moyenne_mobile(close, 20)
-    data['SMA_50'] = calcul_moyenne_mobile(close, 50)
-    data['Bollinger_sup'], data['Bollinger_inf'] = calcul_bollinger(close)
-    data['Stoch_K'], data['Stoch_D'] = calcul_stochastique(high, low, close)
-    data['ADX'], data['Plus_DI'], data['Minus_DI'] = calcul_adx(high, low, close)
-
-    data_affiche = data[data["Afficher"]].copy()
-
+    # Le reste du code pour tracé et sauvegarde reste identique :
     x = np.arange(len(data_affiche))
     y = data_affiche['Close'].to_numpy().ravel()
 
@@ -250,9 +244,12 @@ def tracer_periode(periode, intervalle):
         ax.set_xlim(left=0, right=len(x) - 1)
 
     plt.tight_layout()
+
+    # Sauvegarde CSV et graph uniquement des données filtrées
     data_affiche.to_csv(os.path.join(chemin_dossier_csv, f"{periode}_{intervalle}_{ticker.replace('.', '_')}.csv"), index=False)
     plt.savefig(os.path.join(chemin_dossier_graphe, f"{periode}_{intervalle}_{ticker.replace('.', '_')}_graph.png"))
     plt.close()
+
 
 # === Appels ===
 tracer_periode(periode_1d_1m, intervalle_1d_1m)
