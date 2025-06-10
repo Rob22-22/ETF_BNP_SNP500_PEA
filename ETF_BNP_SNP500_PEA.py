@@ -125,10 +125,13 @@ def tracer_periode(periode, intervalle):
     if intervalle in ['1m', '2m', '5m', '15m', '30m', '60m', '1h', '90m', '120m']:
         data = data.between_time(heure_debut, heure_fin)
 
-    # Filtrer uniquement les données du jour courant pour 1d/1m
+    # Pour calculs : on garde les données récentes (veille + aujourd'hui)
+    # Pour affichage : on sélectionne seulement les données du jour en cours
     if periode == "1d" and intervalle == "1m":
         today = pd.Timestamp.now(tz='Europe/Paris').date()
-        data = data[data.index.date == today]
+        data["EstAujourdHui"] = data.index.date == today
+    else:
+        data["EstAujourdHui"] = True  # pour les autres périodes, on garde tout
 
     data.reset_index(inplace=True)
 
@@ -150,7 +153,7 @@ def tracer_periode(periode, intervalle):
     else:
         date_limite = data["DateRef"].iloc[-1]
 
-    data["Afficher"] = data["DateRef"] >= date_limite
+    data["Afficher"] = data["EstAujourdHui"]
 
     close = data['Close']
     high = data['High']
